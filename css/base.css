@@ -1,0 +1,108 @@
+:root {
+    --bg-obsidiana: #100C08;
+    --bg-superficie: #181310;
+    --bg-tarjeta: #1F1916;
+    --bg-tarjeta-hover: #261F1B;
+    --texto-principal: #F3F4F5;
+    --texto-secundario: #DBE0E1;
+    --texto-apagado: #9A9592;
+
+    --ambar: #FF9408;
+    --terracota: #CA3F16;
+    --carmesi: #95122C;
+
+    /* 5 Gradientes oficiales de la paleta */
+    --gradiente-01: linear-gradient(135deg, #F3F4F5 0%, #FF9408 100%);
+    --gradiente-02: linear-gradient(135deg, #DBE0E1 0%, #CA3F16 100%);
+    --gradiente-03: linear-gradient(135deg, #FF9408 0%, #95122C 100%);
+    --gradiente-04: linear-gradient(135deg, #FF9408 0%, #CA3F16 45%, #95122C 80%, #100C08 100%);
+    --gradiente-05: linear-gradient(180deg, #95122C 0%, #100C08 100%);
+
+    --borde-sutil: rgba(243, 244, 245, 0.08);
+    --borde-calido: rgba(255, 148, 8, 0.28);
+    --radio-tarjeta: 18px;
+    --radio-pildora: 999px;
+}
+
+/* Selector universal */
+* {
+    box-sizing: border-box;
+}
+
+/* Selectores de elemento y agrupacion */
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    background-color: var(--bg-obsidiana);
+    background-image:
+        radial-gradient(circle at 85% 8%, rgba(202, 63, 22, 0.16), transparent 40%),
+        radial-gradient(circle at 12% 90%, rgba(149, 18, 44, 0.18), transparent 45%);
+    background-attachment: fixed;
+    color: var(--texto-principal);
+    line-height: 1.55;
+    min-height: 100vh;
+}
+
+h1, h2, h3 {
+    color: var(--texto-principal);
+    margin-top: 0;
+    letter-spacing: -0.02em;
+}
+
+/* Selector de ID */
+#contenido {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 28px 22px;
+}
+
+/* Selectores de atributo */
+.tarjeta[data-estado='disponible'] {
+    border-left: 4px solid var(--ambar);
+}
+
+.tarjeta[data-estado='alquilado'] {
+    border-left: 4px solid var(--terracota);
+}
+
+.tarjeta[data-estado='mantenimiento'] {
+    border-left: 4px solid var(--carmesi);
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='date'],
+input[type='number'],
+select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--borde-sutil);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    background-color: #14100D;
+    color: var(--texto-principal);
+    color-scheme: dark;
+}
+
+/* Combinadores (descendiente, hijo directo, hermano adyacente y hermano general) */
+.menu a {
+    color: var(--texto-secundario);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.tarjeta > p {
+    margin: 6px 0;
+    color: var(--texto-secundario);
+}
+
+label + input,
+label + select {
+    margin-top: 6px;
+}
+
+h2 ~ p {
+    color: var(--texto-apagado);
+}
