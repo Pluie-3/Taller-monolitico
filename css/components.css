@@ -1,0 +1,259 @@
+.tarjeta {
+    background: radial-gradient(circle at top right, rgba(255, 148, 8, 0.08), transparent 60%), var(--bg-tarjeta);
+    border: 1px solid var(--borde-sutil);
+    padding: 20px;
+    border-radius: var(--radio-tarjeta);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.tarjeta .numero-grande {
+    font-size: 2.3rem;
+    font-weight: 800;
+    background: var(--gradiente-01);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 6px 0 0 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-tarjeta);
+    border: 1px solid var(--borde-sutil);
+    border-radius: var(--radio-tarjeta);
+    overflow: hidden;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+th {
+    background: linear-gradient(90deg, #241C18, #1A1411);
+    color: var(--ambar);
+    text-align: left;
+    padding: 13px 15px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--borde-calido);
+}
+
+td {
+    padding: 12px 15px;
+    color: var(--texto-secundario);
+    border-bottom: 1px solid var(--borde-sutil);
+}
+
+.btn, button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--radio-pildora);
+    background: var(--gradiente-03);
+    color: var(--texto-principal);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(202, 63, 22, 0.35);
+}
+
+.btn-secundario {
+    background: #2A231F;
+    border: 1px solid var(--borde-sutil);
+    box-shadow: none;
+}
+
+.btn-peligro {
+    background: linear-gradient(135deg, #CA3F16, #95122C);
+}
+
+.btn-bloque {
+    width: 100%;
+    text-align: center;
+    padding: 13px 22px;
+    font-size: 1rem;
+}
+
+.acciones a:not(.btn) {
+    color: var(--ambar);
+    text-decoration: none;
+    font-size: 0.88rem;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: rgba(255, 148, 8, 0.08);
+}
+
+/* Calendario */
+.calendario-celda.otro-mes {
+    opacity: 0.32;
+}
+
+.dia-numero {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 600;
+    align-self: flex-end;
+}
+
+.calendario-celda.seleccionado .dia-numero {
+    background: var(--carmesi);
+    color: var(--texto-principal);
+    box-shadow: 0 0 12px rgba(149, 18, 44, 0.8);
+}
+
+.calendario-celda.hoy:not(.seleccionado) .dia-numero {
+    border: 1px solid var(--ambar);
+    color: var(--ambar);
+}
+
+.cal-etiqueta {
+    font-size: 0.72rem;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: rgba(202, 63, 22, 0.25);
+    color: var(--texto-principal);
+    border-left: 2px solid var(--ambar);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Mensajes Flash */
+.mensaje {
+    padding: 13px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.mensaje.ok {
+    background: rgba(255, 148, 8, 0.14);
+    color: var(--texto-principal);
+    border: 1px solid var(--ambar);
+}
+
+.mensaje.error {
+    background: rgba(149, 18, 44, 0.25);
+    color: var(--texto-principal);
+    border: 1px solid var(--carmesi);
+}
+
+/* PSEUDOCLASES */
+tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+tbody tr:hover,
+.calendario-celda:hover {
+    background-color: rgba(255, 148, 8, 0.10);
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--ambar);
+    box-shadow: 0 0 0 3px rgba(255, 148, 8, 0.22);
+}
+
+input:required, select:required {
+    border-left: 3px solid var(--ambar);
+}
+
+input:invalid:not(:placeholder-shown) {
+    border-color: var(--carmesi);
+    background-color: rgba(149, 18, 44, 0.15);
+}
+
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.acciones a:first-child {
+    font-weight: 700;
+}
+
+.lista-vacia:empty::after {
+    content: 'No hay registros disponibles en este momento.';
+    display: block;
+    padding: 18px;
+    color: var(--texto-apagado);
+}
+
+/* MODAL SIN JAVASCRIPT CON :target */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(16, 12, 8, 0.82);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal:target {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-contenido {
+    background: var(--bg-superficie);
+    border: 1px solid var(--borde-calido);
+    padding: 26px;
+    border-radius: 22px;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+}
+
+/* PSEUDOELEMENTOS */
+.estado {
+    font-weight: 700;
+    text-transform: capitalize;
+    color: var(--texto-principal);
+}
+
+.estado::before {
+    content: '';
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--ambar);
+    margin-right: 8px;
+}
+
+.tarjeta[data-estado='alquilado'] .estado::before {
+    background: var(--terracota);
+}
+
+.tarjeta[data-estado='mantenimiento'] .estado::before {
+    background: var(--carmesi);
+}
+
+h1::after {
+    content: '  |  Fleet Control';
+    font-size: 0.48em;
+    font-weight: 500;
+    color: var(--ambar);
+}
+
+.intro-texto:first-of-type::first-letter {
+    font-size: 1.45em;
+    font-weight: 800;
+    color: var(--ambar);
+}
+
+input::placeholder {
+    color: var(--texto-apagado);
+    font-style: italic;
+}
+
+::selection {
+    background-color: var(--terracota);
+    color: var(--texto-principal);
+}
