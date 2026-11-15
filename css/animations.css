@@ -1,0 +1,77 @@
+/* TRANSICIONES */
+.tarjeta,
+.calendario-celda {
+    transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tarjeta:hover {
+    transform: translateY(-5px);
+    background-color: var(--bg-tarjeta-hover);
+    border-color: var(--borde-calido);
+    box-shadow: 0 14px 32px rgba(202, 63, 22, 0.22);
+}
+
+.menu a {
+    padding: 8px 14px;
+    border-radius: var(--radio-pildora);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.menu a:hover {
+    background-color: rgba(255, 148, 8, 0.16);
+    color: var(--texto-principal);
+}
+
+.btn, button {
+    transition: transform 0.18s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.btn:hover, button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+    box-shadow: 0 8px 22px rgba(255, 148, 8, 0.4);
+}
+
+/* ANIMACIONES @keyframes */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tarjeta,
+.login-tarjeta {
+    animation: aparecer 0.45s ease both;
+}
+
+.tarjeta:nth-child(2) { animation-delay: 0.08s; }
+.tarjeta:nth-child(3) { animation-delay: 0.16s; }
+.tarjeta:nth-child(4) { animation-delay: 0.24s; }
+
+@keyframes pulso {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(255, 148, 8, 0.65);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(255, 148, 8, 0);
+    }
+}
+
+.tarjeta[data-estado='alquilado'] .estado::before {
+    animation: pulso 2s infinite;
+}
+
+@keyframes desvanecer {
+    0% { opacity: 1; }
+    82% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+.mensaje {
+    animation: desvanecer 5s forwards;
+}
