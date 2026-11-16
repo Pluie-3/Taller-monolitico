@@ -7,6 +7,7 @@ $counts = ControllersConfig::get_vehicles_controller()->get_summary_counts();
 $active_rentals = ControllersConfig::get_rentals_controller()->get_active_count();
 
 require_once __DIR__ . '/partials/header.php';
+
 ?>
 <h1>Panel de Inicio</h1>
 <p class="intro-texto">Bienvenido al sistema central de administracion de flota, clientes y reservas.</p>
