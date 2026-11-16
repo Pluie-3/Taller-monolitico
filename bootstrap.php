@@ -5,12 +5,15 @@ require_once __DIR__ . '/models/entities/vehicle.php';
 require_once __DIR__ . '/models/entities/customer.php';
 require_once __DIR__ . '/models/entities/rental.php';
 require_once __DIR__ . '/models/mappers/vehicles_mappers.php';
-require_once __DIR__ . '/models/mappers/customers_mappers.php';require_once __DIR__ . '/models/mappers/rentals_mappers.php';
+require_once __DIR__ . '/models/mappers/customers_mappers.php';
+require_once __DIR__ . '/models/mappers/rentals_mappers.php';
 require_once __DIR__ . '/models/database/rental_db_interface.php';
 require_once __DIR__ . '/models/database/rental_db.php';
 require_once __DIR__ . '/models/repositories/vehicles_repository_interface.php';
 require_once __DIR__ . '/models/repositories/vehicles_repository.php';
 require_once __DIR__ . '/models/config/models_config.php';
+require_once __DIR__ . '/models/repositories/rentals_repository_interface.php';
+require_once __DIR__ . '/models/repositories/rentals_repository.php';
 //CONTROLADOR
 require_once __DIR__ . '/controllers/vehicles/vehicles_controller_interface.php';
 require_once __DIR__ . '/controllers/vehicles/vehicles_controller.php';
