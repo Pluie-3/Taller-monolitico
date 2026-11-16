@@ -73,6 +73,16 @@ td {
     font-size: 1rem;
 }
 
+.btn-sm {
+    padding: 6px 14px;
+    font-size: 0.82rem;
+}
+
+.btn-xs {
+    padding: 5px 13px;
+    font-size: 0.84rem;
+}
+
 .acciones a:not(.btn) {
     color: var(--ambar);
     text-decoration: none;
@@ -82,7 +92,55 @@ td {
     background: rgba(255, 148, 8, 0.08);
 }
 
+/* Textos auxiliares, Login y Pie */
+.usuario-nombre {
+    font-size: 0.85rem;
+    color: var(--texto-apagado);
+}
+
+.texto-apagado {
+    color: var(--texto-apagado);
+}
+
+.pie-linea {
+    border: 0;
+    border-top: 1px solid var(--borde-sutil);
+    margin-bottom: 12px;
+}
+
+.login-subtitulo {
+    color: var(--ambar);
+    font-weight: 700;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+}
+
+.login-titulo {
+    font-size: 1.75rem;
+    margin-bottom: 6px;
+}
+
+.login-descripcion {
+    color: var(--texto-apagado);
+    font-size: 0.9rem;
+    margin-bottom: 22px;
+}
+
+.login-nota {
+    margin-top: 18px;
+    font-size: 0.8rem;
+    color: var(--texto-apagado);
+    text-align: center;
+}
+
 /* Calendario */
+.calendario-titulo {
+    margin: 0;
+    font-size: 1.15rem;
+}
+
 .calendario-celda.otro-mes {
     opacity: 0.32;
 }

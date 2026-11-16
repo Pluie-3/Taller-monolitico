@@ -21,11 +21,9 @@ $flash = get_flash();
 <body>
     <div class="login-pantalla">
         <div class="login-tarjeta">
-            <p style="color: var(--ambar); font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;">
-                Premium Fleet System
-            </p>
-            <h2 style="font-size: 1.75rem; margin-bottom: 6px;">Premium cars.<br>Enjoy the luxury.</h2>
-            <p style="color: var(--texto-apagado); font-size: 0.9rem; margin-bottom: 22px;">
+            <p class="login-subtitulo">Premium Fleet System</p>
+            <h2 class="login-titulo">Premium cars.<br>Enjoy the luxury.</h2>
+            <p class="login-descripcion">
                 Inicia sesion para administrar vehiculos, clientes y reservas.
             </p>
 
@@ -36,12 +34,12 @@ $flash = get_flash();
             <?php endif; ?>
 
             <form action="<?= BASE_URL ?>views/actions/auth_login.php" method="post">
-                <div style="margin-bottom: 14px;">
+                <div class="campo-grupo">
                     <label for="usuario">Usuario:</label>
                     <input type="text" name="usuario" id="usuario" required placeholder="admin" value="admin">
                 </div>
 
-                <div style="margin-bottom: 22px;">
+                <div class="campo-grupo-lg">
                     <label for="clave">Contrasena:</label>
                     <input type="password" name="clave" id="clave" required placeholder="••••••••" value="1234">
                 </div>
@@ -49,7 +47,7 @@ $flash = get_flash();
                 <button type="submit" class="btn btn-bloque">Get Started — Entrar</button>
             </form>
 
-            <p style="margin-top: 18px; font-size: 0.8rem; color: var(--texto-apagado); text-align: center;">
+            <p class="login-nota">
                 Acceso demo: <b>admin</b> / <b>1234</b>
             </p>
         </div>
