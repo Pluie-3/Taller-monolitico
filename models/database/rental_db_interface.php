@@ -9,4 +9,5 @@ interface RentalDBInterface
     public function begin_transaction(): void;
     public function commit(): void;
     public function rollback(): void;
+    public function affected_rows(): int;
 }

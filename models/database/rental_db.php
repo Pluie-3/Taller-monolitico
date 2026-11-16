@@ -48,9 +48,14 @@ class RentalDB implements RentalDBInterface
             return false;
         }
     }
+    public function affected_rows(): int 
+{
+    return $this->conex->affected_rows;
+}
 
     public function last_insert_id(): int { return $this->conex->insert_id; }
     public function begin_transaction(): void { $this->conex->begin_transaction(); }
     public function commit(): void { $this->conex->commit(); }
     public function rollback(): void { $this->conex->rollback(); }
+    
 }
