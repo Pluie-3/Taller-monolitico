@@ -1,63 +1,83 @@
 <?php
-namespace app\models\database;
 
-use mysqli;
-use mysqli_sql_exception;
+namespace app\models\entities;
 
-class RentalDB implements RentalDBInterface
+class Rental
 {
-    private string $host_db = 'localhost';
-    private string $user_db = 'root';
-    private string $pwd_db = '';
-    private string $name_db = 'alquiler_vehiculos_db';
-    private int $port_db = 3306;
-    private mysqli $conex;
-
-    public function __construct()
-    {
-        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-        $this->conex = new mysqli($this->host_db, $this->user_db, $this->pwd_db, $this->name_db, $this->port_db);
-        $this->conex->set_charset('utf8mb4');
+    private int $id;
+    private int $vehicle_id;
+    private int $customer_id;
+    private string $start_date;
+    private string $end_date;
+    private string $return_date;   
+    private string $status;          // 'reservado' | 'en_curso' | 'devuelto' | 'cancelado'
+    private string $vehicle_label;   // solo para mostrar 
+    private string $customer_name;   // solo para mostrar
+    
+    public function __construct(
+        int $id,
+        int $vehicle_id,
+        int $customer_id,
+        string $start_date,
+        string $end_date,
+        string $return_date,
+        string $status,
+        string $vehicle_label = '',
+        string $customer_name = ''
+    ) {
+        $this->id = $id;
+        $this->vehicle_id = $vehicle_id;
+        $this->customer_id = $customer_id;
+        $this->start_date = $start_date;
+        $this->end_date = $end_date;
+        $this->return_date = $return_date;
+        $this->status = $status;
+        $this->vehicle_label = $vehicle_label;
+        $this->customer_name = $customer_name;
     }
 
-    public function __destruct()
+    public function get_id(): int
     {
-        $this->conex->close();
+        return $this->id;
     }
 
-    public function exc_select(string $sql, string $types = '', array $params = []): array
+    public function get_vehicle_id(): int
     {
-        $stmt = $this->conex->prepare($sql);
-        if ($types !== '') {
-            $stmt->bind_param($types, ...$params);
-        }
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $rows = [];
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-        $stmt->close();
-        return $rows;
+        return $this->vehicle_id;
     }
 
-    public function exc_query(string $sql, string $types = '', array $params = []): bool
+    public function get_customer_id(): int
     {
-        try {
-            $stmt = $this->conex->prepare($sql);
-            if ($types !== '') {
-                $stmt->bind_param($types, ...$params);
-            }
-            $ok = $stmt->execute();
-            $stmt->close();
-            return $ok;
-        } catch (mysqli_sql_exception $e) {
-            return false;
-        }
+        return $this->customer_id;
     }
 
-    public function affected_rows(): int { return $this->conex->affected_rows; }
-    public function begin_transaction(): void { $this->conex->begin_transaction(); }
-    public function commit(): void { $this->conex->commit(); }
-    public function rollback(): void { $this->conex->rollback(); }
+    public function get_start_date(): string
+    {
+        return $this->start_date;
+    }
+
+    public function get_end_date(): string
+    {
+        return $this->end_date;
+    }
+
+    public function get_return_date(): string
+    {
+        return $this->return_date;
+    }
+
+    public function get_status(): string
+    {
+        return $this->status;
+    }
+
+    public function get_vehicle_label(): string
+    {
+        return $this->vehicle_label;
+    }
+
+    public function get_customer_name(): string
+    {
+        return $this->customer_name;
+    }
 }
