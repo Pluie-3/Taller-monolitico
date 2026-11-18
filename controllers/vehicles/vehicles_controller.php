@@ -29,22 +29,33 @@ $vehicle = new Vehicle(0, trim($post['brand']), trim($post['model']), (int) $pos
  }
  public function vehicle_update(array $post): array
  {
- $id = (int) ($post['id'] ?? 0);
- $error = $this->validate($post, $id);
- if ($id <= 0 || $error !== null) { return ['success' => false, 'message' => $error ?? 'Vehiculo
- no valido']; }
- // Regla: no se puede pasar a mantenimiento un vehiculo que esta alquilado (completen esta regla)
- $vehicle = new Vehicle($id, trim($post['brand']), trim($post['model']),
- (int) $post['year'], $post['category'], $post['status']);
- $ok = $this->vehicles_model->update_vehicle($vehicle);
- return ['success' => $ok, 'message' => $ok ? 'Vehiculo actualizado' : 'No se pudo actualizar'];
+  $id = (int) ($post['id'] ?? 0);
+  $error = $this->validate($post, $id);
+  if ($id <= 0 || $error !== null) {
+   return ['success' => false, 'message' => $error ?? 'Vehiculo no valido'];
+  }
+  $current = $this->vehicles_model->get_vehicle_by_id($id);
+  if ($current === null) {
+   return ['success' => false, 'message' => 'El vehiculo no existe'];
+  }
+  if ($current->get_status() === 'alquilado' && $post['status'] === 'mantenimiento') {
+   return ['success' => false, 'message' => 'No se puede pasar a mantenimiento un vehiculo que esta alquilado'];
+  }
+  $vehicle = new Vehicle($id, trim($post['brand']), trim($post['model']), (int) $post['year'], $post['category'], $post['status']);
+  $ok = $this->vehicles_model->update_vehicle($vehicle);
+  return ['success' => $ok, 'message' => $ok ? 'Vehiculo actualizado' : 'No se pudo actualizar'];
  }
  public function vehicle_delete(array $post): array
  {
- $id = (int) ($post['id'] ?? 0);
- $ok = $id > 0 && $this->vehicles_model->delete_vehicle($id);
- return ['success' => $ok, 'message' => $ok ? 'Vehiculo eliminado'
- : 'No se puede eliminar: el vehiculo tiene alquileres en su historial'];
+  $id = (int) ($post['id'] ?? 0);
+  if ($id <= 0) {
+   return ['success' => false, 'message' => 'Vehiculo no valido'];
+  }
+  if ($this->vehicles_model->has_rentals($id)) {
+   return ['success' => false, 'message' => 'No se puede eliminar: el vehiculo tiene alquileres en su historial'];
+  }
+  $ok = $this->vehicles_model->delete_vehicle($id);
+  return ['success' => $ok, 'message' => $ok ? 'Vehiculo eliminado' : 'No se pudo eliminar el vehiculo'];
  }
  // Devuelve el mensaje de error, o null si todo esta bien
  private function validate(array $post, int $except_id): ?string
@@ -52,8 +63,7 @@ $vehicle = new Vehicle(0, trim($post['brand']), trim($post['model']), (int) $pos
  $brand = trim($post['brand'] ?? '');
  $model = trim($post['model'] ?? '');
  $year = (int) ($post['year'] ?? 0);
- if ($brand === '' || $model === '') { return 'Placa, marca y modelo son
- obligatorios'; }
+ if ($brand === '' || $model === '') { return ' marca y modelo son obligatorios'; }
  if ($year < 1990 || $year > (int) date('Y') + 1) { return 'El anio no es valido'; }
  if (!in_array($post['category'] ?? '', self::CATEGORIES, true)) { return 'Categoria no valida';
  }

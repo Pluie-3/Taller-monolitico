@@ -43,9 +43,9 @@ class CustomersRepository implements CustomersRepositoryInterface
         return (int) $rows_db[0]['total'] > 0;
     }
 
-    public function save_new_customer(Customer $customer): bool
+   public function save_new_customer(Customer $customer): bool
     {
-        $sql = 'insert into clientes(nombre, telefono, email, numero_licencia) values (?, ?, ?, ?)';
+        $sql = 'insert into clientes(nombre, telefono, correo, numero_licencia) values (?, ?, ?, ?)';
         return $this->rental_db->exc_query($sql, 'ssss', [
             $customer->get_name(),
             $customer->get_phone(),
@@ -56,7 +56,7 @@ class CustomersRepository implements CustomersRepositoryInterface
 
     public function update_customer(Customer $customer): bool
     {
-        $sql = 'update clientes set nombre = ?, telefono = ?, email = ?, numero_licencia = ? where id = ?';
+        $sql = 'update clientes set nombre = ?, telefono = ?, correo = ?, numero_licencia = ? where id = ?';
         return $this->rental_db->exc_query($sql, 'ssssi', [
             $customer->get_name(),
             $customer->get_phone(),
@@ -65,7 +65,7 @@ class CustomersRepository implements CustomersRepositoryInterface
             $customer->get_id()
         ]);
     }
-
+    
     public function delete_customer(int $id): bool
     {
         return $this->rental_db->exc_query('delete from clientes where id = ?', 'i', [$id]);

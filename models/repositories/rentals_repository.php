@@ -13,7 +13,7 @@ class RentalsRepository implements RentalsRepositoryInterface
     private const SELECT_WITH_NAMES = "select a.*,
         concat(v.marca, ' ', v.modelo) as vehiculo,
         c.nombre as cliente
-    from alquileres a
+    from reservas a
     join vehiculos v on v.id = a.vehiculo_id
     join clientes c on c.id = a.cliente_id";
 
@@ -55,27 +55,30 @@ class RentalsRepository implements RentalsRepositoryInterface
 
     public function has_overlap(int $vehicle_id, string $start_date, string $end_date): bool
     {
-        $sql = "select count(*) as total from alquileres
-                where vehiculo_id = ?
-                and estado in ('reservado', 'en_curso')
-                and fecha_inicio <= ?
-                and fecha_fin >= ?";
+        $sql = "select count(*) as total from reservas r
+                join vehiculos v on v.id = r.vehiculo_id
+                where r.vehiculo_id = ?
+                and r.estado = 'activa'
+                and (
+                    v.estado = 'alquilado'
+                    or (r.fecha_inicio <= ? and r.fecha_fin >= ?)
+                )";
         $rows_db = $this->rental_db->exc_select($sql, 'iss', [$vehicle_id, $end_date, $start_date]);
         return (int) $rows_db[0]['total'] > 0;
     }
 
     public function count_by_status(string $status): int
     {
-        $sql = 'select count(*) as total from alquileres where estado = ?';
+        $sql = 'select count(*) as total from reservas where estado = ?';
         $rows_db = $this->rental_db->exc_select($sql, 's', [$status]);
         return (int) $rows_db[0]['total'];
     }
 
-    // Toda reserva nueva nace en estado 'reservado'
+    // Toda reserva nueva nace en estado 'activa'
     public function save_new_rental(Rental $rental): bool
     {
-        $sql = "insert into alquileres(vehiculo_id, cliente_id, fecha_inicio, fecha_fin, estado)
-                values (?, ?, ?, ?, 'reservado')";
+        $sql = "insert into reservas(vehiculo_id, cliente_id, fecha_inicio, fecha_fin, estado)
+                values (?, ?, ?, ?, 'activa')";
         return $this->rental_db->exc_query($sql, 'iiss', [
             $rental->get_vehicle_id(),
             $rental->get_customer_id(),
@@ -84,33 +87,36 @@ class RentalsRepository implements RentalsRepositoryInterface
         ]);
     }
 
-    // Solo se puede cancelar una reserva que siga en estado 'reservado'
+    // Solo se puede cancelar una reserva 'activa' cuyo vehiculo aun no ha sido entregado
     public function cancel_rental(int $rental_id): bool
     {
-        $sql = 'update alquileres set estado = ? where id = ? and estado = ?';
-        $ok = $this->rental_db->exc_query($sql, 'sis', ['cancelado', $rental_id, 'reservado']);
+        $sql = "update reservas r
+                join vehiculos v on v.id = r.vehiculo_id
+                set r.estado = ?
+                where r.id = ? and r.estado = ? and v.estado = ?";
+        $ok = $this->rental_db->exc_query($sql, 'siss', ['cancelada', $rental_id, 'activa', 'disponible']);
         return $ok && $this->rental_db->affected_rows() === 1;
     }
 
-    // ENTREGAR:
+    // ENTREGAR: pasa el vehiculo de 'disponible' a 'alquilado' manteniendo la reserva 'activa'
     public function start_rental(int $rental_id, int $vehicle_id): bool
     {
         $this->rental_db->begin_transaction();
         try {
-            $ok1 = $this->rental_db->exc_query(
-                'update alquileres set estado = ? where id = ? and estado = ?',
-                'sis',
-                ['en_curso', $rental_id, 'reservado']
+            $rows = $this->rental_db->exc_select(
+                'select id from reservas where id = ? and vehiculo_id = ? and estado = ?',
+                'iis',
+                [$rental_id, $vehicle_id, 'activa']
             );
-            if (!$ok1 || $this->rental_db->affected_rows() !== 1) {
-                throw new RuntimeException('El alquiler ya no esta en estado reservado');
+            if (count($rows) !== 1) {
+                throw new RuntimeException('La reserva no esta activa');
             }
-            $ok2 = $this->rental_db->exc_query(
+            $ok = $this->rental_db->exc_query(
                 'update vehiculos set estado = ? where id = ? and estado = ?',
                 'sis',
                 ['alquilado', $vehicle_id, 'disponible']
             );
-            if (!$ok2 || $this->rental_db->affected_rows() !== 1) {
+            if (!$ok || $this->rental_db->affected_rows() !== 1) {
                 throw new RuntimeException('El vehiculo ya no esta disponible');
             }
             $this->rental_db->commit();
@@ -121,26 +127,26 @@ class RentalsRepository implements RentalsRepositoryInterface
         }
     }
 
-    // DEVOLVER: 
+    // DEVOLVER: cierra la reserva como 'completada' y libera el vehiculo a 'disponible'
     public function return_rental(int $rental_id, int $vehicle_id, string $return_date): bool
     {
         $this->rental_db->begin_transaction();
         try {
             $ok1 = $this->rental_db->exc_query(
-                'update alquileres set estado = ?, fecha_devolucion = ? where id = ? and estado = ?',
-                'ssis',
-                ['devuelto', $return_date, $rental_id, 'en_curso']
+                'update reservas set estado = ? where id = ? and vehiculo_id = ? and estado = ?',
+                'siis',
+                ['completada', $rental_id, $vehicle_id, 'activa']
             );
             if (!$ok1 || $this->rental_db->affected_rows() !== 1) {
-                throw new RuntimeException('El alquiler ya no esta en curso');
+                throw new RuntimeException('La reserva no esta activa');
             }
             $ok2 = $this->rental_db->exc_query(
-                'update vehiculos set estado = ? where id = ?',
-                'si',
-                ['disponible', $vehicle_id]
+                'update vehiculos set estado = ? where id = ? and estado = ?',
+                'sis',
+                ['disponible', $vehicle_id, 'alquilado']
             );
-            if (!$ok2) {
-                throw new RuntimeException('No se pudo actualizar el vehiculo');
+            if (!$ok2 || $this->rental_db->affected_rows() !== 1) {
+                throw new RuntimeException('El vehiculo no estaba alquilado');
             }
             $this->rental_db->commit();
             return true;

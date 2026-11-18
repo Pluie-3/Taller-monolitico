@@ -11,17 +11,19 @@ require_once __DIR__ . '/models/database/rental_db_interface.php';
 require_once __DIR__ . '/models/database/rental_db.php';
 require_once __DIR__ . '/models/repositories/vehicles_repository_interface.php';
 require_once __DIR__ . '/models/repositories/vehicles_repository.php';
-require_once __DIR__ . '/models/config/models_config.php';
+require_once __DIR__ . '/models/repositories/customer_repository_interface.php';
+require_once __DIR__ . '/models/repositories/customer_repository.php';
 require_once __DIR__ . '/models/repositories/rentals_repository_interface.php';
 require_once __DIR__ . '/models/repositories/rentals_repository.php';
+require_once __DIR__ . '/models/config/models_config.php';
 //CONTROLADOR
 require_once __DIR__ . '/controllers/vehicles/vehicles_controller_interface.php';
 require_once __DIR__ . '/controllers/vehicles/vehicles_controller.php';
-require_once __DIR__ . '/controllers/config/controllers_config.php';
 require_once __DIR__ . '/controllers/customers/customers_controller_interface.php';
 require_once __DIR__ . '/controllers/customers/customers_controller.php';
 require_once __DIR__ . '/controllers/rentals/rentals_controller_interface.php';
 require_once __DIR__ . '/controllers/rentals/rentals_controller.php';
+require_once __DIR__ . '/controllers/config/controllers_config.php';
 // UTILIDADES
 function e(string $text): string { // escapa texto antes de imprimirlo en HTML
  return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');

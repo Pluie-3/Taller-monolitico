@@ -1,6 +1,6 @@
 <?php
 namespace app\models\entities;
-class customer
+class Customer
 {
     private int $id;
     private string $name;
