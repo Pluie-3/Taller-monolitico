@@ -42,13 +42,18 @@ class RentalsController implements RentalsControllerInterface
     {
         return $this->rentals_model->get_history_by_customer($customer_id);
     }
-
-    public function count_by_status(string $status): int
+public function count_by_status(string $status): int
     {
         return $this->rentals_model->count_by_status($status);
     }
 
+    public function get_active_count(): int
+    {
+        return $this->rentals_model->count_by_status('activa');
+    }
+
     public function rental_create(array $post): array
+
     {
         $vehicle_id = (int) ($post['vehicle_id'] ?? 0);
         $customer_id = (int) ($post['customer_id'] ?? 0);

@@ -14,9 +14,20 @@ class VehiclesController implements VehiclesControllerInterface
  public function get_vehicles(): array { return $this->vehicles_model->get_vehicles_all(); }
  public function get_vehicle_by_id(int $id): ?Vehicle { return
  $this->vehicles_model->get_vehicle_by_id($id); }
- public function get_available_vehicles(string $date): array
+public function get_available_vehicles(string $date): array
  {
- return $this->vehicles_model->get_available_on($date);
+  return $this->vehicles_model->get_available_on($date);
+ }
+ public function get_summary_counts(): array
+ {
+  $counts = ['disponible' => 0, 'alquilado' => 0, 'mantenimiento' => 0];
+  foreach ($this->vehicles_model->get_vehicles_all() as $v) {
+   $st = $v->get_status();
+   if (isset($counts[$st])) {
+    $counts[$st]++;
+   }
+  }
+  return $counts;
  }
  public function vehicle_create(array $post): array
  {
@@ -63,7 +74,7 @@ $vehicle = new Vehicle(0, trim($post['brand']), trim($post['model']), (int) $pos
  $brand = trim($post['brand'] ?? '');
  $model = trim($post['model'] ?? '');
  $year = (int) ($post['year'] ?? 0);
- if ($brand === '' || $model === '') { return ' marca y modelo son obligatorios'; }
+ if ($brand === '' || $model === '') { return 'Marca y modelo son obligatorios'; }
  if ($year < 1990 || $year > (int) date('Y') + 1) { return 'El anio no es valido'; }
  if (!in_array($post['category'] ?? '', self::CATEGORIES, true)) { return 'Categoria no valida';
  }

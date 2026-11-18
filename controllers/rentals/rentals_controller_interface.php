@@ -10,6 +10,7 @@ interface RentalsControllerInterface
     public function get_history_by_vehicle(int $vehicle_id): array;
     public function get_history_by_customer(int $customer_id): array;
     public function count_by_status(string $status): int;
+    public function get_active_count(): int;
     public function rental_create(array $post): array;
     public function rental_start(array $post): array;
     public function rental_return(array $post): array;
