@@ -5,8 +5,6 @@ use app\controllers\config\ControllersConfig;
 
 $customers = ControllersConfig::get_customers_controller()->get_customers();
 
-$extra_css = [BASE_URL . 'css/vendor/bootstrap.min.css'];
-
 require_once __DIR__ . '/../partials/header.php';
 ?>
 <div class="barra-titulo">
@@ -14,13 +12,13 @@ require_once __DIR__ . '/../partials/header.php';
     <a class="btn" href="formulario.php">+ Registrar cliente</a>
 </div>
 
-<table class="table table-dark table-striped table-hover">
+<table class="tabla">
     <thead>
         <tr>
             <th>Nombre</th>
-            <th>Telefono</th>
+            <th>Teléfono</th>
             <th>Correo</th>
-            <th>Numero de Licencia</th>
+            <th>Número de Licencia</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -30,7 +28,7 @@ require_once __DIR__ . '/../partials/header.php';
                 <td><?= e($c->get_name()) ?></td>
                 <td><?= e($c->get_phone()) ?></td>
                 <td><?= e($c->get_email()) ?></td>
-                <td><span class="badge text-bg-warning"><?= e($c->get_license_number()) ?></span></td>
+                <td><span class="etiqueta"><?= e($c->get_license_number()) ?></span></td>
                 <td class="acciones">
                     <a href="formulario.php?id=<?= (int) $c->get_id() ?>">Editar</a>
                     <a href="confirmar_eliminar.php?id=<?= (int) $c->get_id() ?>">Eliminar</a>
