@@ -4,15 +4,19 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 date_default_timezone_set('America/Bogota');
-$doc_root = str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'] ?? ''));
-$app_root = str_replace('\\', '/', realpath(__DIR__));
-$base_url = ($doc_root !== '' && str_starts_with($app_root, $doc_root))
+
+$doc_root = str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'] ?? '') ?: '');
+$app_root = str_replace('\\', '/', realpath(__DIR__) ?: __DIR__);
+
+$base_url = ($doc_root !== '' && stripos($app_root, $doc_root) === 0)
     ? substr($app_root, strlen($doc_root))
     : '';
+
 $base_url = '/' . trim($base_url, '/') . '/';
 if ($base_url === '//') {
     $base_url = '/';
 }
+
 define('BASE_URL', $base_url);
 
 // MODELO

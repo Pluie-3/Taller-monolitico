@@ -23,37 +23,41 @@ require __DIR__ . '/../partials/calendario.php';
 
 <form class="form-2col" action="../actions/alquileres_crear.php" method="post">
     <div>
-        <label for="vehicle_id">Vehiculo:</label>
-        <select name="vehicle_id" id="vehicle_id" required>
-            <option value="">-- Seleccione un vehiculo --</option>
-            <?php foreach ($vehicles as $v): ?>
-                <option value="<?= (int) $v->get_id() ?>" <?= $pre_vehicle_id === $v->get_id() ? 'selected' : '' ?>>
-                    <?= e($v->get_brand() . ' ' . $v->get_model() . ' (' . $v->get_year() . ') — ' . $v->get_status()) ?>
+        <label for="customer_id">Cliente:</label>
+        <select name="customer_id" id="customer_id" required>
+            <option value="">-- Seleccione un cliente --</option>
+            <?php foreach ($customers as $c): ?>
+                <option value="<?= (int) $c->get_id() ?>">
+                    <?= e($c->get_name()) ?> (Lic: <?= e($c->get_license_number()) ?>)
                 </option>
             <?php endforeach; ?>
         </select>
     </div>
 
     <div>
-        <label for="customer_id">Cliente:</label>
-        <select name="customer_id" id="customer_id" required>
-            <option value="">-- Seleccione un cliente --</option>
-            <?php foreach ($customers as $c): ?>
-                <option value="<?= (int) $c->get_id() ?>">
-                    <?= e($c->get_name() . ' (' . $c->get_license_number() . ')') ?>
-                </option>
+        <label for="vehicle_id">Vehiculo:</label>
+        <select name="vehicle_id" id="vehicle_id" required>
+            <option value="">-- Seleccione un vehiculo --</option>
+            <?php foreach ($vehicles as $v): ?>
+                <?php if ($v->get_status() !== 'mantenimiento'): ?>
+                    <option value="<?= (int) $v->get_id() ?>" <?= $pre_vehicle_id === $v->get_id() ? 'selected' : '' ?>>
+                        <?= e($v->get_brand() . ' ' . $v->get_model()) ?> (<?= (int) $v->get_year() ?> — <?= e($v->get_status()) ?>)
+                    </option>
+                <?php endif; ?>
             <?php endforeach; ?>
         </select>
     </div>
 
     <div>
         <label for="start_date">Fecha de inicio:</label>
-        <input type="date" name="start_date" id="start_date" required value="<?= e($pre_start_date) ?>">
+        <input type="date" name="start_date" id="start_date" required
+               min="<?= e(date('Y-m-d')) ?>" value="<?= e($pre_start_date) ?>">
     </div>
 
     <div>
         <label for="end_date">Fecha de fin:</label>
-        <input type="date" name="end_date" id="end_date" required value="<?= e($pre_start_date) ?>">
+        <input type="date" name="end_date" id="end_date" required
+               min="<?= e(date('Y-m-d')) ?>" value="<?= e($pre_start_date) ?>">
     </div>
 
     <div class="ancho-completo acciones">

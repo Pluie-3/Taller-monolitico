@@ -141,7 +141,7 @@ namespace app\controllers\config {
             return array_values(array_filter($this->items, fn($r) => $r->get_customer_id() === $id));
         }
         public function rental_create(array $d): array { return ['success' => true, 'message' => 'Vista previa: reserva registrada']; }
-        public function rental_deliver(array $d): array { return ['success' => true, 'message' => 'Vista previa: entrega registrada']; }
+        public function rental_start(array $d): array { return ['success' => true, 'message' => 'Vista previa: entrega registrada']; }
         public function rental_return(array $d): array { return ['success' => true, 'message' => 'Vista previa: devolucion registrada']; }
         public function rental_cancel(array $d): array { return ['success' => true, 'message' => 'Vista previa: reserva cancelada']; }
     }
